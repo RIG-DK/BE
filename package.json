@@ -10,7 +10,10 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
-    "node": "^12.4.0"
+    "knex": "^0.17.5",
+    "node": "^12.4.0",
+    "pg": "^7.11.0",
+    "sqlite3": "^4.0.8"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
