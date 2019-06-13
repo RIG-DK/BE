@@ -3,16 +3,20 @@ const server = express();
 const helmet = require('helmet');
 const cors = require('cors');
 
-const posts = require('./posts-router.js');
-
 server.use(express.json());
 server.use(helmet());
 server.use(cors());
+server.options('*', cors());
 
-/* server.use('*', cors({
-   origin: ['http://localhost:3000'],
-   credentials: true,
-})); */
+const posts = require('./posts-router.js');
+
+
+// server.use('*', cors({
+//    origin: ['http://localhost:3001'],
+//    credentials: false,
+// })); 
+
+
 
 
 /* Routes */
