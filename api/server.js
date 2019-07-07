@@ -9,6 +9,8 @@ server.use(cors());
 server.options('*', cors());
 
 const posts = require('./posts-router.js');
+const users = require('./users-router.js');
+const auth = require('./auth-router.js');
 
 
 // server.use('*', cors({
@@ -16,12 +18,12 @@ const posts = require('./posts-router.js');
 //    credentials: false,
 // })); 
 
-
-
-
 /* Routes */
 
-server.use('/posts', posts)
+server.use('/posts', posts);
+server.use('/api/users', users);
+server.use('/api/auth', auth);
+
 
 server.get('/', (req, res) => {
     res.status(200).json({message: "API Running!"});
