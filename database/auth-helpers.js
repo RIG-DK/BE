@@ -11,7 +11,7 @@ module.exports = {
          phone: user.phone,
       };
 
-      const secret = process.env.JWT_SECRET;
+      const secret = process.env.JWT_SECRET || 'secret';
 
       const options = {
          expiresIn: '1d',
@@ -24,7 +24,7 @@ module.exports = {
       const token = req.headers.authorization;
 
       if (token) {
-         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+         jwt.verify(token, secret, (err, decodedToken) => {
             if (err) {
                res.status(401).json({ message: 'Invalid token' });
             } else {

@@ -6,52 +6,51 @@ const authHelper = require('../database/auth-helpers.js');
 
 
 router.post('/register', async (req, res) => {
-    const creds = req.body;
-    const hash = bcrypt.hashSync(creds.password, 11);
-    creds.password = hash;
+   const creds = req.body;
+   const hash = bcrypt.hashSync(creds.password, 11);
+   creds.password = hash;
 
-    try {
-       let insertUser = await users.insert(creds);
-       const token = authHelper.generateToken(creds);
-       insertUser = await db('users').where({username: insertUser.username}).select("id", "username", "email", "firstName", "lastName");
+   try {
+   await db('users').insert(creds);
+   const token = authHelper.generateToken(creds);
 
-       res.status(201).json({
-          message: `Registration successful`,
-          token,
-          currentUser: insertUser,
-       });
+      res.status(201).json({
+      message: `Registration successful`,
+      token,
+      currentUser: creds,
+      });
 
-    } catch (err) {
-       res.status(500).json({ message: `Unable to register` });
-    }
+   } catch (err) {
+      res.status(500).json({ message: `Unable to register` });
+   }
  });
 
- router.post('/login', async (req, res) => {
-    const creds = req.body;
+router.post('/login', async (req, res) => {
+   const creds = req.body;
 
-    try {
-       let user = await db('users')
-          .where({ username: creds.username })
-          .first();
+   try {
+      let user = await db('users')
+         .where({ username: creds.username })
+         .first();
 
-       if (user && bcrypt.compareSync(creds.password, user.password)) {
-          const token = authHelper.generateToken(user);
+      if (user && bcrypt.compareSync(creds.password, user.password)) {
+         const token = authHelper.generateToken(user);
 
-          user = await db('users')
-          .where({ username: creds.username })
-          .first().select("id", "username", "email", "firstName", "lastName");
+         user = await db('users')
+         .where({ username: creds.username })
+         .first().select("id", "username", "email", "firstName", "lastName");
 
-          res.status(200).json({
-             message: `Welcome back ${user.firstName} ${user.lastName}`,
-             token,
-             currentUser: user
-          });
-       } else {
-          res.status(401).json({ message: `Unauthorized credentials` });
-       }
-    } catch (err) {
-       res.status(500).json({ message: `Unable to login` });
-    }
+         res.status(200).json({
+            message: `Welcome back ${user.firstName} ${user.lastName}`,
+            token,
+            currentUser: user
+         });
+      } else {
+         res.status(401).json({ message: `Unauthorized credentials` });
+      }
+   } catch (err) {
+      res.status(500).json({ message: `Unable to login` });
+   }
  });
 
  module.exports = router;
