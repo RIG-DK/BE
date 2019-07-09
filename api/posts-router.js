@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', authHelper.protected, (req, res) => {
+router.post('/', (req, res) => {
     newPost = req.body;
     db('posts').insert(newPost)
     .then((post) => {
