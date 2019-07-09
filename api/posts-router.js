@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 });
 
 
-router.delete('/:id', authHelper.protected, (req, res) => {
+router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const post = db('posts').where({ id: id})
 
@@ -56,7 +56,7 @@ router.delete('/:id', authHelper.protected, (req, res) => {
 });
 
 
-router.put('/:id', authHelper.protected, async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const changes = req.body;
     try {
