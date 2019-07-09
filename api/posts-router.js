@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/dbConfig.js');
-
+const authHelper = require('../database/auth-helpers.js');
 
 router.get('/', async (req, res) => {
     const allPosts = await db('posts');
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', (req, res) => {
+router.post('/', authHelper.protected, (req, res) => {
     newPost = req.body;
     db('posts').insert(newPost)
     .then((post) => {
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 });
 
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authHelper.protected, (req, res) => {
     const { id } = req.params;
     const post = db('posts').where({ id: id})
 
@@ -56,7 +56,7 @@ router.delete('/:id', (req, res) => {
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authHelper.protected, async (req, res) => {
     const { id } = req.params;
     const changes = req.body;
     try {
